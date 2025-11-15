@@ -14,6 +14,14 @@ Simulador de Máquinas de Turing (MT) de una cinta que permite:
 - Indicar si el resultado es aceptado o rechazado
 - Visualizar descripciones instantáneas (IDs) en cada paso
 
+------------------------------------------------------------------------
+
+## 🎥 Video de Evaluación
+
+https://youtu.be/BzrN4sIKENo
+
+------------------------------------------------------------------------
+
 ## Requisitos
 
 - PyYAML
