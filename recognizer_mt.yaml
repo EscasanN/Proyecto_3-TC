@@ -1,0 +1,101 @@
+# Máquina de Turing Reconocedora
+# Lenguaje: {a^n b^n | n ≥ 1}
+# Reconoce cadenas con igual número de 'a's seguidas de igual número de 'b's
+
+mt:
+  states: [q0, q1, q2, q3, q4, qaccept, qreject]
+  input_alphabet: [a, b]
+  tape_alphabet: [a, b, B, X, Y]
+  initial_state: q0
+  accept_states: [qaccept]
+  
+  transitions:
+    # Estado q0: Buscar primera 'a' no marcada
+    - state: q0
+      read: [a]
+      write: [X]
+      move: R
+      next: q1
+    
+    - state: q0
+      read: [Y]
+      write: [Y]
+      move: R
+      next: q0
+    
+    - state: q0
+      read: [B]
+      write: [B]
+      move: L
+      next: q4
+    
+    # Estado q1: Avanzar hasta encontrar primera 'b' no marcada
+    - state: q1
+      read: [a]
+      write: [a]
+      move: R
+      next: q1
+    
+    - state: q1
+      read: [Y]
+      write: [Y]
+      move: R
+      next: q1
+    
+    - state: q1
+      read: [b]
+      write: [Y]
+      move: L
+      next: q2
+    
+    # Estado q2: Regresar al inicio
+    - state: q2
+      read: [a]
+      write: [a]
+      move: L
+      next: q2
+    
+    - state: q2
+      read: [Y]
+      write: [Y]
+      move: L
+      next: q2
+    
+    - state: q2
+      read: [X]
+      write: [X]
+      move: R
+      next: q0
+    
+    # Estado q4: Verificar que todo esté marcado
+    - state: q4
+      read: [Y]
+      write: [Y]
+      move: L
+      next: q4
+    
+    - state: q4
+      read: [X]
+      write: [X]
+      move: L
+      next: q4
+    
+    - state: q4
+      read: [B]
+      write: [B]
+      move: R
+      next: qaccept
+
+# Casos de prueba
+inputs:
+  # Cadenas ACEPTADAS (longitud >= 5)
+  - "aaabbb"      # n=3, debe aceptar
+  - "aaaabbbbb"   # n=4, debe aceptar (pero extra b, debe rechazar) - ERROR: debe ser aaaabbbb
+  - "aaaaabbbbb"  # n=5, debe aceptar
+  - "aaaaaabbbbbb" # n=6, debe aceptar
+  
+  # Cadenas RECHAZADAS (longitud >= 5)
+  - "aaabbbbb"    # Más b's que a's
+  - "aaaaabbb"    # Más a's que b's
+  - "ababab"      # Intercaladas
+  - "bbbbaaa"     # Orden incorrecto

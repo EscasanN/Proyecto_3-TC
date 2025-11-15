@@ -1,0 +1,76 @@
+# Máquina de Turing Alteradora
+# Función: Intercambiar 'a' por 'b' y viceversa
+# Ejemplo: "aaabbb" -> "bbbaaa"
+# Esta es una alteración simple pero efectiva
+
+mt:
+  states: [q0, q1, qaccept]
+  input_alphabet: [a, b]
+  tape_alphabet: [a, b, B, X, Y]
+  initial_state: q0
+  accept_states: [qaccept]
+  
+  transitions:
+    # Estado q0: Escanear y marcar
+    - state: q0
+      read: [a]
+      write: [X]
+      move: R
+      next: q0
+    
+    - state: q0
+      read: [b]
+      write: [Y]
+      move: R
+      next: q0
+    
+    - state: q0
+      read: [B]
+      write: [B]
+      move: L
+      next: q1
+    
+    # Estado q1: Reemplazar marcas con símbolos intercambiados
+    - state: q1
+      read: [X]
+      write: [b]
+      move: L
+      next: q1
+    
+    - state: q1
+      read: [Y]
+      write: [a]
+      move: L
+      next: q1
+    
+    - state: q1
+      read: [B]
+      write: [B]
+      move: R
+      next: qaccept
+    
+    # Estado qaccept: Mantener
+    - state: qaccept
+      read: [a]
+      write: [a]
+      move: S
+      next: qaccept
+    
+    - state: qaccept
+      read: [b]
+      write: [b]
+      move: S
+      next: qaccept
+    
+    - state: qaccept
+      read: [B]
+      write: [B]
+      move: S
+      next: qaccept
+
+# Casos de prueba (longitud >= 5)
+inputs:
+  - "aaaaa"      # -> "bbbbb"
+  - "bbbbb"      # -> "aaaaa"
+  - "aaabbb"     # -> "bbbaaa"
+  - "ababab"     # -> "bababa"
